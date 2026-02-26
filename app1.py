@@ -12,4 +12,14 @@
 
 # Introducción a Pandas
 
-open("datasets_G615")
+# Importar las librerías
+import pandas as pd
+from tabulate import tabulate
+
+# Llamar o cargar dataset CSV
+df = pd.read_csv('datasets_G615/CalificacionesTXT.csv')
+print(tabulate(df))
+print(tabulate(df.head()))
+print(df.tail())
+print(df.describe())
+print(df.info())
