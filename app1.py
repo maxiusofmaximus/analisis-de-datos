@@ -15,11 +15,60 @@
 # Importar las librerías
 import pandas as pd
 from tabulate import tabulate
+import numpy as np
+import openpyxl
 
 # Llamar o cargar dataset CSV
 df = pd.read_csv('datasets_G615/CalificacionesTXT.csv')
-print(tabulate(df))
-print(tabulate(df.head()))
-print(df.tail())
-print(df.describe())
-print(df.info())
+# print(tabulate(df))
+# print(tabulate(df.head()))
+# print(df.tail())
+# print(df.describe())
+# print(df.info())
+
+df_nuevo = pd.read_csv('datasets_G615/CalificacionesTXT.csv')
+
+est_programa = df_nuevo.groupby('Programa').agg({'Programa': 'count'})
+
+# print("\nPrograma\n", tabulate(est_programa), end="\n\n")
+
+# Cantidad de estudiantes
+
+est_genero = df_nuevo.groupby('Genero').agg({'Genero': 'count'})
+
+# print("\nPrograma\n", tabulate(est_genero), end="\n\n")
+
+# Cantidad de estudiantes por programa y genero
+
+est_programa_genero = df_nuevo.groupby(['Programa', 'Genero']).agg({'Programa': 'count'})
+
+# print("\nPrograma\n", tabulate(est_programa_genero), end="\n\n")
+
+# Cantidad de estudiantes que aprueban matemáticas
+
+# aprueba_matematicas = df_nuevo['Matematicas']>=3.5
+# aprueba_matematicas = aprueba_matematicas.replace({False: 'No aprobado', True: 'Aprobado'})
+# estado_aprueba_matematicas = df_nuevo.groupby(aprueba_matematicas)['Matematicas'].count()
+
+# print(estado_aprueba_matematicas)
+
+# Operación y generación de nuevas columnas
+
+# Reemplazamos la coma por punto y convertimos a float para que la suma funcione
+df_nuevo['Promedio'] = (
+    df_nuevo['Matematicas'].str.replace(',', '.').astype(float) + 
+    df_nuevo['Español'].str.replace(',', '.').astype(float) + 
+    df_nuevo['Ciencias'].str.replace(',', '.').astype(float) + 
+    df_nuevo['Idiomas'].str.replace(',', '.').astype(float)
+) / 4
+
+# print(df_nuevo)
+
+# Exportar el dataset a 
+
+# Excel
+
+# df_nuevo.to_excel('datos.xlsx', index=False)
+df_nuevo.to_csv('datos.csv', index=False)
+
+# html_table = df.to_html(classes='table table-striped table-hover table-bordered', index=False)
